@@ -2,34 +2,53 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>تمرين الاستماع</title>
+    <title>مركز الاستماع - إتقان</title>
     <style>
-        body { font-family: sans-serif; background: #eef2f6; padding: 20px; text-align: center; }
-        .card { max-width: 500px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        body { font-family: 'Segoe UI', sans-serif; background: #eef2f6; padding: 20px; text-align: center; }
+        .listen-card { max-width: 600px; margin: 40px auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        audio { width: 100%; margin: 20px 0; border-radius: 50px; }
+        select { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #ddd; }
+        .transcript { background: #f9fafb; padding: 15px; border-radius: 10px; text-align: left; margin-top: 20px; color: #333; direction: ltr; }
+        h2 { color: #1e3a8a; }
     </style>
 </head>
 <body>
-<div class="card">
-    <h2>🎧 حوار تعارف (English Conversation)</h2>
-    <p>استمع للحوار بين شخصين باللغة الإنجليزية:</p>
-    
-    <audio controls>
-        <source src="https://www.learningoutloud.com/sample/english-conv.mp3" type="audio/mpeg">
-        متصفحك لا يدعم الصوت.
+
+<div class="listen-card">
+    <h2>🎧 مركز الاستماع الإنجليزي</h2>
+    <p>اختر حواراً واستمع إليه، يمكنك قراءة النص أثناء الاستماع:</p>
+
+    <select id="audioSelector" onchange="changeAudio()">
+        <option value="https://www.eslfast.com/robot/audio/conversation/conversation01.mp3" data-text="A: Hello! I'm John. B: Hi John, I'm Sarah. Nice to meet you. A: Nice to meet you too!">حوار التعارف</option>
+        <option value="https://www.eslfast.com/robot/audio/conversation/conversation02.mp3" data-text="A: What would you like to eat? B: I would like a burger, please. A: And to drink? B: Water, please.">حوار في المطعم</option>
+        <option value="https://www.eslfast.com/robot/audio/conversation/conversation03.mp3" data-text="A: What time is it? B: It is 3 o'clock. A: Thank you!">حوار عن الوقت</option>
+    </select>
+
+    <audio controls id="myAudio">
+        <source src="https://www.eslfast.com/robot/audio/conversation/conversation01.mp3" type="audio/mpeg">
     </audio>
-    
-    <hr>
-    <p>سؤال: ما اسم الشخصية في الحوار؟</p>
-    <input type="text" id="ans">
-    <button onclick="check()">تحقق</button>
+
+    <div class="transcript" id="transcript">
+        <strong>نص الحوار:</strong><br>
+        A: Hello! I'm John. B: Hi John, I'm Sarah. Nice to meet you. A: Nice to meet you too!
+    </div>
 </div>
 
 <script>
-    function check() {
-        const val = document.getElementById('ans').value.toLowerCase();
-        if(val.includes("john")) alert("أحسنت! الإجابة صحيحة.");
-        else alert("حاول مرة أخرى، التركيز مهم!");
+    function changeAudio() {
+        const selector = document.getElementById('audioSelector');
+        const audio = document.getElementById('myAudio');
+        const source = audio.querySelector('source');
+        const transcript = document.getElementById('transcript');
+        
+        // تحديث مصدر الصوت
+        source.src = selector.value;
+        audio.load();
+        
+        // تحديث نص الحوار
+        transcript.innerHTML = "<strong>نص الحوار:</strong><br>" + selector.options[selector.selectedIndex].getAttribute('data-text');
     }
 </script>
+
 </body>
 </html>
