@@ -4,10 +4,34 @@
     <meta charset="UTF-8">
     <title>مركز الاستماع - إتقان</title>
     <style>
-        body { font-family: sans-serif; background: #eef2f6; padding: 20px; text-align: center; }
-        .card { max-width: 600px; margin: 40px auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        select { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #ddd; }
-        audio { width: 100%; margin-top: 20px; }
+        body { 
+            font-family: sans-serif; 
+            background: #eef2f6; 
+            padding: 20px; 
+            text-align: center; 
+        }
+
+        .card { 
+            max-width: 600px; 
+            margin: 40px auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+        }
+
+        select { 
+            width: 100%; 
+            padding: 12px; 
+            margin-bottom: 20px; 
+            border-radius: 10px; 
+            border: 1px solid #ddd; 
+        }
+
+        audio { 
+            width: 100%; 
+            margin-top: 20px; 
+        }
     </style>
 </head>
 <body>
@@ -17,27 +41,30 @@
     <p>اختر الحلقة واستمتع بالاستماع:</p>
 
     <select id="audioSelector" onchange="changeAudio()">
-        <option value="audio/6MinuteEnglish-20260122-ScaredToSpeakEnglish.mp3">Scared To Speak English</option>
-        <option value="audio/6MinuteEnglish-20260212-ArtisticSwimming.mp3">Artistic Swimming</option>
-        <option value="audio/6MinuteEnglish-20260219-DreamingOfBeingAChef.mp3">Dreaming Of Being A Chef</option>
+        <option value="6MinuteEnglish-20260122-ScaredToSpeakEnglish.mp3">
+            Scared To Speak English
+        </option>
+        <option value="6MinuteEnglish-20260212-ArtisticSwimming.mp3">
+            Artistic Swimming
+        </option>
+        <option value="6MinuteEnglish-20260219-DreamingOfBeingAChef.mp3">
+            Dreaming Of Being A Chef
+        </option>
     </select>
 
     <audio controls id="myAudio"
-       src="audio/6MinuteEnglish-20260122-ScaredToSpeakEnglish.mp3">
-    </audio>>
+        src="6MinuteEnglish-20260122-ScaredToSpeakEnglish.mp3">
+    </audio>
 </div>
 
 <script>
-    function changeAudio() {
-        const selector = document.getElementById('audioSelector');
-        const audio = document.getElementById('myAudio');
-        const source = audio.querySelector('source');
-        
-        // تغيير المصدر حسب اختيار المستخدم
-        source.src = selector.value;
-        audio.load();
-        audio.play();
-    }
+function changeAudio() {
+    const selector = document.getElementById('audioSelector');
+    const audio = document.getElementById('myAudio');
+
+    audio.src = selector.value;
+    audio.load();
+}
 </script>
 
 </body>
