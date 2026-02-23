@@ -4,7 +4,14 @@ const assets = [
   '/index.html',
   '/style.css',
   '/script.js',
-  '/manifest.json'
+  '/manifest.json',
+  '/grammar.html',
+  '/vocabulary.html',
+  '/listening.html',
+  '/quiz.html',
+  '/audio/6MinuteEnglish-20260122-ScaredToSpeakEnglish.mp3',
+  '/audio/6MinuteEnglish-20260212-ArtisticSwimming.mp3',
+  '/audio/6MinuteEnglish-20260219-DreamingOfBeingAChef.mp3'
 ];
 
 // تثبيت التطبيق وتخزين الملفات
