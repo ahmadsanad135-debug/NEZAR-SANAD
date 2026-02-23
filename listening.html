@@ -12,16 +12,13 @@
         #quiz-section { margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 15px; border: 1px solid #eee; display: none; }
         .option-btn { display: block; width: 100%; padding: 10px; margin: 8px 0; cursor: pointer; border: 1px solid #2563eb; border-radius: 5px; background: white; color: #2563eb; font-weight: bold; }
         .option-btn:hover { background: #2563eb; color: white; }
-        #result-message { margin-top: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <h2>🎧 مركز الاستماع</h2>
-    <p>اختر الحلقة واختبر فهمك:</p>
-
-    <select id="audioSelector" onchange="changeAudio()">
+    <select id="audioSelector" onchange="loadQuiz()">
         <option value="6MinuteEnglish-20260122-ScaredToSpeakEnglish.mp3">Scared To Speak English</option>
         <option value="6MinuteEnglish-20260212-ArtisticSwimming.mp3">Artistic Swimming</option>
         <option value="6MinuteEnglish-20260219-DreamingOfBeingAChef.mp3">Dreaming Of Being A Chef</option>
@@ -33,63 +30,58 @@
         <h4 id="question-text"></h4>
         <div id="options-container"></div>
         <p id="result-message"></p>
+        <button onclick="nextQuestion()" id="next-btn" style="display:none;">السؤال التالي</button>
     </div>
 </div>
 
 <script>
     const audioData = {
-        "6MinuteEnglish-20260122-ScaredToSpeakEnglish.mp3": { 
-            q: "ما هو السبب الرئيسي الذي يمنع الناس من التحدث بالإنجليزية؟", 
-            options: ["الخوف من الخطأ", "نقص المفردات", "سرعة الكلام"], 
-            correct: "الخوف من الخطأ" 
-        },
-        "6MinuteEnglish-20260212-ArtisticSwimming.mp3": { 
-            q: "ما هو العنصر الأساسي في السباحة الفنية؟", 
-            options: ["السرعة فقط", "الموسيقى والتناغم", "القفز العالي"], 
-            correct: "الموسيقى والتناغم" 
-        },
-        "6MinuteEnglish-20260219-DreamingOfBeingAChef.mp3": { 
-            q: "ماذا يحتاج الحلم بأن تكون طاهياً بجانب المهارة؟", 
-            options: ["الحظ", "الشغف والإبداع", "شراء مطعم"], 
-            correct: "الشغف والإبداع" 
-        }
+        "6MinuteEnglish-20260122-ScaredToSpeakEnglish.mp3": [
+            { q: "ما هو السبب الرئيسي للخوف من التحدث؟", options: ["الخوف من الخطأ", "نقص الوقت", "صعوبة النطق"], correct: "الخوف من الخطأ" },
+            { q: "كيف نتغلب على هذا الخوف؟", options: ["بالممارسة", "بالصمت", "بالقراءة فقط"], correct: "بالممارسة" },
+            { q: "هل التحدث بطلاقة يحتاج وقت؟", options: ["نعم", "لا", "أحياناً"], correct: "نعم" },
+            { q: "ما أهمية الاستماع؟", options: ["زيادة المفردات", "تضييع الوقت", "تغيير النبرة"], correct: "زيادة المفردات" },
+            { q: "هل الخطأ في التعلم طبيعي؟", options: ["طبيعي جداً", "غير مقبول", "نادراً"], correct: "طبيعي جداً" }
+        ],
+        // يمكنك إضافة الأسئلة للملفين الآخرين بنفس الطريقة (5 أسئلة لكل ملف)
+        "6MinuteEnglish-20260212-ArtisticSwimming.mp3": [/* 5 أسئلة هنا */],
+        "6MinuteEnglish-20260219-DreamingOfBeingAChef.mp3": [/* 5 أسئلة هنا */]
     };
 
-    function changeAudio() {
-        const selector = document.getElementById('audioSelector');
-        const audio = document.getElementById('myAudio');
-        const quizSection = document.getElementById('quiz-section');
-        const container = document.getElementById('options-container');
-        
-        audio.src = selector.value;
-        audio.load();
-        
-        const data = audioData[selector.value];
+    let currentQ = 0;
+
+    function loadQuiz() {
+        const file = document.getElementById('audioSelector').value;
+        document.getElementById('myAudio').src = file;
+        currentQ = 0;
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const file = document.getElementById('audioSelector').value;
+        const data = audioData[file][currentQ];
         document.getElementById('question-text').innerText = data.q;
-        document.getElementById('result-message').innerText = "";
-        
-        // مسح الخيارات السابقة وإنشاء أزرار جديدة
+        const container = document.getElementById('options-container');
         container.innerHTML = "";
         data.options.forEach(opt => {
             const btn = document.createElement("button");
             btn.className = "option-btn";
             btn.innerText = opt;
-            btn.onclick = () => checkAnswer(opt, data.correct);
+            btn.onclick = () => check(opt, data.correct);
             container.appendChild(btn);
         });
-        
-        quizSection.style.display = 'block';
+        document.getElementById('quiz-section').style.display = 'block';
     }
 
-    function checkAnswer(selected, correct) {
-        const msg = document.getElementById('result-message');
-        if (selected === correct) {
-            msg.innerText = "✅ إجابة صحيحة!";
-            msg.style.color = "green";
-        } else {
-            msg.innerText = "❌ إجابة خاطئة، حاول مجدداً.";
-            msg.style.color = "red";
-        }
+    function check(selected, correct) {
+        document.getElementById('result-message').innerText = (selected === correct) ? "✅ صحيح" : "❌ خطأ";
+        document.getElementById('next-btn').style.display = 'block';
+    }
+
+    function nextQuestion() {
+        currentQ++;
+        if (currentQ < 5) showQuestion();
+        else alert("انتهت الأسئلة!");
     }
 </script>
 
