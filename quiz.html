@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>اختبار إتقان التفاعلي</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .quiz-container { max-width: 600px; margin: 50px auto; padding: 20px; background: #fff; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .option-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #2563eb; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .option-btn:hover { background: #dbeafe; }
+        .correct { background: #22c55e !important; color: white; border-color: #166534; }
+        .wrong { background: #ef4444 !important; color: white; border-color: #991b1b; }
+    </style>
+</head>
+<body>
+<div class="quiz-container">
+    <h2 id="question">جاري تحميل السؤال...</h2>
+    <div id="options"></div>
+    <p id="score-text"></p>
+</div>
+
+<script>
+const quizData = [
+    { q: "ما هو تصريف الفعل Go في الماضي؟", a: ["Went", "Gone", "Going"], correct: 0 },
+    { q: "أي جملة هي الصحيحة للمضارع المستمر؟", a: ["I am study", "I am studying", "I study"], correct: 1 }
+];
+
+let currentQ = 0, score = 0;
+function loadQuiz() {
+    const data = quizData[currentQ];
+    document.getElementById('question').innerText = data.q;
+    const optionsDiv = document.getElementById('options');
+    optionsDiv.innerHTML = '';
+    data.a.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerText = opt;
+        btn.onclick = () => check(i, btn);
+        optionsDiv.appendChild(btn);
+    });
+}
+function check(idx, btn) {
+    if(idx === quizData[currentQ].correct) {
+        btn.classList.add('correct'); score++;
+    } else {
+        btn.classList.add('wrong');
+    }
+    setTimeout(() => {
+        currentQ++;
+        if(currentQ < quizData.length) loadQuiz();
+        else document.querySelector('.quiz-container').innerHTML = `<h2>انتهى الاختبار! نتيجتك: ${score}/${quizData.length}</h2>`;
+    }, 1000);
+}
+loadQuiz();
+</script>
+</body>
+</html>
