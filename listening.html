@@ -1,20 +1,38 @@
-<section id="listening" class="card">
-    <h3>🎧 تدريب الاستماع</h3>
-    <audio id="audioPlayer" controls>
-        <source src="listening_clip.mp3" type="audio/mpeg">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>مركز الاستماع - إتقان</title>
+    <style>
+        body { background: #f0f2f5; padding: 20px; font-family: sans-serif; }
+        .listen-card { max-width: 600px; margin: 40px auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
+        audio { width: 100%; margin: 20px 0; border-radius: 50px; }
+        input { width: 80%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; margin-bottom: 15px; }
+        button { padding: 10px 25px; background: #2563eb; color: white; border: none; border-radius: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="listen-card">
+    <h2>🎧 تمرين الاستماع</h2>
+    <p>استمع للحوار التالي ثم أجب:</p>
+    
+    <audio controls>
+        <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
+        متصفحك لا يدعم مشغل الصوت.
     </audio>
-    <div id="listening-task">
-        <p>استمع للمقطع واكتب ما سمعته:</p>
-        <input type="text" id="listenInput" placeholder="اكتب هنا...">
-        <button onclick="checkListening()">تحقق</button>
-    </div>
-</section>
+
+    <input type="text" id="answer" placeholder="ماذا سمعت؟">
+    <br>
+    <button onclick="check()">تحقق من الإجابة</button>
+    <p id="msg"></p>
+</div>
 
 <script>
-function checkListening() {
-    const input = document.getElementById('listenInput').value.toLowerCase();
-    const correct = "hello how are you"; // النص الصحيح
-    if(input === correct) alert("أحسنت! الإجابة صحيحة.");
-    else alert("حاول مرة أخرى!");
-}
+    function check() {
+        const val = document.getElementById('answer').value;
+        document.getElementById('msg').innerText = val ? "تم تسجيل إجابتك!" : "الرجاء الكتابة أولاً";
+    }
 </script>
+</body>
+</html>
