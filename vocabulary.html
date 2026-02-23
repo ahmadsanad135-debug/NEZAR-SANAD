@@ -2,62 +2,180 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>1000 كلمة إنجليزية - إتقان</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قاموس الـ 1000 كلمة - إتقان</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .search-box { width: 100%; padding: 12px; margin: 20px 0; border: 2px solid #2563eb; border-radius: 5px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px; border: 1px solid #ddd; text-align: right; }
-        th { background: #2563eb; color: white; }
+        .container { padding: 20px; max-width: 1000px; margin: auto; }
+        .search-container { position: sticky; top: 0; background: #f4f7f6; padding: 10px 0; z-index: 100; }
+        .search-box { width: 100%; padding: 15px; border: 2px solid #2563eb; border-radius: 30px; font-size: 16px; outline: none; }
+        .stats { margin-bottom: 10px; color: #666; font-size: 14px; }
+        .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .word-card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; transition: 0.3s; border-bottom: 3px solid #f59e0b; }
+        .word-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .en { display: block; font-size: 1.2rem; font-weight: bold; color: #1e3a8a; margin-bottom: 5px; }
+        .ar { color: #059669; font-size: 1.1rem; }
+        .category-tag { font-size: 12px; background: #eee; padding: 2px 8px; border-radius: 10px; color: #777; margin-top: 5px; display: inline-block; }
     </style>
 </head>
 <body>
-    <div style="padding: 20px; max-width: 900px; margin: auto;">
-        <a href="index.html">← العودة للرئيسية</a>
-        <h1>📚 قائمة الـ 1000 كلمة الأكثر شيوعاً</h1>
-        <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن كلمة بالعربي أو الإنجليزي...">
-        <table id="vocabTable">
-            <thead>
-                <tr>
-                    <th>الكلمة (English)</th>
-                    <th>المعنى (Arabic)</th>
-                </tr>
-            </thead>
-            <tbody id="vocabBody">
-                </tbody>
-        </table>
+    <div class="container">
+        <a href="index.html" style="text-decoration:none; color:#2563eb;">← العودة للرئيسية</a>
+        <h1>📚 موسوعة المفردات الشاملة</h1>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن كلمة بالإنجليزية أو العربية...">
+            <div id="stats" class="stats">جاري تحميل الكلمات...</div>
+        </div>
+
+        <div id="vocabGrid" class="vocab-grid">
+            </div>
     </div>
 
     <script>
-        // هنا تضع الـ 1000 كلمة. سأضع لك عينة، ويمكنك تعبئة الباقي
-        const words = [
-            {en: "Ability", ar: "قدرة"},
-            {en: "About", ar: "حول / عن"},
-            {en: "Above", ar: "فوق"},
-            {en: "Accept", ar: "يقبل"},
-            {en: "Account", ar: "حساب"},
-            {en: "Across", ar: "عبر"},
-            {en: "Act", ar: "يفعل / يمثل"},
-            {en: "Action", ar: "حدث / حركة"},
-            // ... أكمل حتى تصل لـ 1000 كلمة
+        // مصفوفة الكلمات (قمت بتضمين مئات الكلمات موزعة على فئات)
+        const vocabulary = [
+            // الأفعال (Verbs)
+            {en: "Go", ar: "يذهب", cat: "Verb"}, {en: "Come", ar: "يأتي", cat: "Verb"},
+            {en: "Take", ar: "يأخذ", cat: "Verb"}, {en: "Give", ar: "يعطي", cat: "Verb"},
+            {en: "See", ar: "يرى", cat: "Verb"}, {en: "Know", ar: "يعرف", cat: "Verb"},
+            {en: "Think", ar: "يفكر", cat: "Verb"}, {en: "Find", ar: "يجد", cat: "Verb"},
+            {en: "Want", ar: "يريد", cat: "Verb"}, {en: "Tell", ar: "يخبر", cat: "Verb"},
+            {en: "Work", ar: "يعمل", cat: "Verb"}, {en: "Call", ar: "يتصل", cat: "Verb"},
+            {en: "Try", ar: "يحاول", cat: "Verb"}, {en: "Ask", ar: "يسأل", cat: "Verb"},
+            {en: "Need", ar: "يحتاج", cat: "Verb"}, {en: "Feel", ar: "يشعر", cat: "Verb"},
+            {en: "Become", ar: "يصبح", cat: "Verb"}, {en: "Leave", ar: "يغادر", cat: "Verb"},
+            {en: "Put", ar: "يضع", cat: "Verb"}, {en: "Mean", ar: "يعني", cat: "Verb"},
+            {en: "Keep", ar: "يحافظ", cat: "Verb"}, {en: "Let", ar: "يسمح", cat: "Verb"},
+            {en: "Begin", ar: "يبدأ", cat: "Verb"}, {en: "Seem", ar: "يبدو", cat: "Verb"},
+            {en: "Help", ar: "يساعد", cat: "Verb"}, {en: "Show", ar: "يظهر", cat: "Verb"},
+            {en: "Hear", ar: "يسمع", cat: "Verb"}, {en: "Play", ar: "يلعب", cat: "Verb"},
+            {en: "Run", ar: "يجري", cat: "Verb"}, {en: "Move", ar: "يتنقل", cat: "Verb"},
+            {en: "Live", ar: "يعيش", cat: "Verb"}, {en: "Believe", ar: "يصدق", cat: "Verb"},
+            {en: "Bring", ar: "يجلب", cat: "Verb"}, {en: "Happen", ar: "يحدث", cat: "Verb"},
+            {en: "Write", ar: "يكتب", cat: "Verb"}, {en: "Sit", ar: "يجلس", cat: "Verb"},
+            {en: "Stand", ar: "يقف", cat: "Verb"}, {en: "Lose", ar: "يفقد", cat: "Verb"},
+            {en: "Pay", ar: "يدفع", cat: "Verb"}, {en: "Meet", ar: "يقابل", cat: "Verb"},
+            {en: "Learn", ar: "يتعلم", cat: "Verb"}, {en: "Change", ar: "يغير", cat: "Verb"},
+            {en: "Lead", ar: "يقود", cat: "Verb"}, {en: "Understand", ar: "يفهم", cat: "Verb"},
+            {en: "Watch", ar: "يشاهد", cat: "Verb"}, {en: "Follow", ar: "يتبع", cat: "Verb"},
+            {en: "Stop", ar: "يتوقف", cat: "Verb"}, {en: "Create", ar: "ينشئ", cat: "Verb"},
+            {en: "Speak", ar: "يتحدث", cat: "Verb"}, {en: "Read", ar: "يقرأ", cat: "Verb"},
+            {en: "Allow", ar: "يسمح", cat: "Verb"}, {en: "Add", ar: "يضيف", cat: "Verb"},
+            {en: "Spend", ar: "ينفق", cat: "Verb"}, {en: "Grow", ar: "ينمو", cat: "Verb"},
+            {en: "Open", ar: "يفتح", cat: "Verb"}, {en: "Walk", ar: "يمشي", cat: "Verb"},
+            {en: "Win", ar: "يفوز", cat: "Verb"}, {en: "Offer", ar: "يعرض", cat: "Verb"},
+            {en: "Remember", ar: "يتذكر", cat: "Verb"}, {en: "Love", ar: "يحب", cat: "Verb"},
+            {en: "Buy", ar: "يشتري", cat: "Verb"}, {en: "Wait", ar: "ينتظر", cat: "Verb"},
+            {en: "Serve", ar: "يخدم", cat: "Verb"}, {en: "Send", ar: "يرسل", cat: "Verb"},
+            {en: "Expect", ar: "يتوقع", cat: "Verb"}, {en: "Build", ar: "يبني", cat: "Verb"},
+            {en: "Stay", ar: "يبقى", cat: "Verb"}, {en: "Fall", ar: "يسقط", cat: "Verb"},
+            {en: "Reach", ar: "يصل", cat: "Verb"}, {en: "Kill", ar: "يقتل", cat: "Verb"},
+            {en: "Suggest", ar: "يقترح", cat: "Verb"}, {en: "Raise", ar: "يرفع", cat: "Verb"},
+            {en: "Pass", ar: "يمرر", cat: "Verb"}, {en: "Sell", ar: "يبيع", cat: "Verb"},
+            {en: "Require", ar: "يتطلب", cat: "Verb"}, {en: "Report", ar: "يبلغ", cat: "Verb"},
+            {en: "Decide", ar: "يقرر", cat: "Verb"}, {en: "Pull", ar: "يسحب", cat: "Verb"},
+
+            // الصفات (Adjectives)
+            {en: "Good", ar: "جيد", cat: "Adj"}, {en: "New", ar: "جديد", cat: "Adj"},
+            {en: "First", ar: "أول", cat: "Adj"}, {en: "Last", ar: "أخير", cat: "Adj"},
+            {en: "Long", ar: "طويل", cat: "Adj"}, {en: "Great", ar: "عظيم", cat: "Adj"},
+            {en: "Little", ar: "صغير/قليل", cat: "Adj"}, {en: "Own", ar: "خاص به", cat: "Adj"},
+            {en: "Other", ar: "آخر", cat: "Adj"}, {en: "Old", ar: "قديم", cat: "Adj"},
+            {en: "Right", ar: "صحيح / يمين", cat: "Adj"}, {en: "Big", ar: "كبير", cat: "Adj"},
+            {en: "High", ar: "عالٍ", cat: "Adj"}, {en: "Small", ar: "صغير", cat: "Adj"},
+            {en: "Large", ar: "ضخم", cat: "Adj"}, {en: "Next", ar: "التالي", cat: "Adj"},
+            {en: "Early", ar: "مبكراً", cat: "Adj"}, {en: "Young", ar: "شاب", cat: "Adj"},
+            {en: "Important", ar: "مهم", cat: "Adj"}, {en: "Few", ar: "قليل", cat: "Adj"},
+            {en: "Public", ar: "عام", cat: "Adj"}, {en: "Bad", ar: "سيء", cat: "Adj"},
+            {en: "Same", ar: "نفسه", cat: "Adj"}, {en: "Able", ar: "قادر", cat: "Adj"},
+            {en: "Full", ar: "ممتلئ", cat: "Adj"}, {en: "Hot", ar: "ساخن", cat: "Adj"},
+            {en: "Cold", ar: "بارد", cat: "Adj"}, {en: "Easy", ar: "سهل", cat: "Adj"},
+            {en: "Hard", ar: "صعب", cat: "Adj"}, {en: "Strong", ar: "قوي", cat: "Adj"},
+
+            // الأسماء (Nouns)
+            {en: "Time", ar: "وقت", cat: "Noun"}, {en: "Year", ar: "سنة", cat: "Noun"},
+            {en: "People", ar: "ناس", cat: "Noun"}, {en: "Way", ar: "طريق", cat: "Noun"},
+            {en: "Day", ar: "يوم", cat: "Noun"}, {en: "Man", ar: "رجل", cat: "Noun"},
+            {en: "Thing", ar: "شيء", cat: "Noun"}, {en: "Woman", ar: "امرأة", cat: "Noun"},
+            {en: "Life", ar: "حياة", cat: "Noun"}, {en: "Child", ar: "طفل", cat: "Noun"},
+            {en: "World", ar: "عالم", cat: "Noun"}, {en: "School", ar: "مدرسة", cat: "Noun"},
+            {en: "State", ar: "دولة", cat: "Noun"}, {en: "Family", ar: "عائلة", cat: "Noun"},
+            {en: "Student", ar: "طالب", cat: "Noun"}, {en: "Group", ar: "مجموعة", cat: "Noun"},
+            {en: "Country", ar: "بلد", cat: "Noun"}, {en: "Problem", ar: "مشكلة", cat: "Noun"},
+            {en: "Hand", ar: "يد", cat: "Noun"}, {en: "Part", ar: "جزء", cat: "Noun"},
+            {en: "Place", ar: "مكان", cat: "Noun"}, {en: "Case", ar: "حالة", cat: "Noun"},
+            {en: "Week", ar: "أسبوع", cat: "Noun"}, {en: "Company", ar: "شركة", cat: "Noun"},
+            {en: "System", ar: "نظام", cat: "Noun"}, {en: "Program", ar: "برنامج", cat: "Noun"},
+            {en: "Question", ar: "سؤال", cat: "Noun"}, {en: "Work", ar: "عمل", cat: "Noun"},
+            {en: "Government", ar: "حكومة", cat: "Noun"}, {en: "Number", ar: "رقم", cat: "Noun"},
+            {en: "Night", ar: "ليل", cat: "Noun"}, {en: "Point", ar: "نقطة", cat: "Noun"},
+            {en: "Home", ar: "منزل", cat: "Noun"}, {en: "Water", ar: "ماء", cat: "Noun"},
+            {en: "Room", ar: "غرفة", cat: "Noun"}, {en: "Mother", ar: "أم", cat: "Noun"},
+            {en: "Area", ar: "منطقة", cat: "Noun"}, {en: "Money", ar: "مال", cat: "Noun"},
+            {en: "Story", ar: "قصة", cat: "Noun"}, {en: "Fact", ar: "حقيقة", cat: "Noun"},
+            {en: "Month", ar: "شهر", cat: "Noun"}, {en: "Lot", ar: "كثير", cat: "Noun"},
+            {en: "Right", ar: "حق", cat: "Noun"}, {en: "Study", ar: "دراسة", cat: "Noun"},
+            {en: "Book", ar: "كتاب", cat: "Noun"}, {en: "Eye", ar: "عين", cat: "Noun"},
+            {en: "Job", ar: "وظيفة", cat: "Noun"}, {en: "Word", ar: "كلمة", cat: "Noun"},
+            {en: "Business", ar: "تجارة", cat: "Noun"}, {en: "Issue", ar: "قضية", cat: "Noun"},
+            {en: "Side", ar: "جانب", cat: "Noun"}, {en: "Kind", ar: "نوع", cat: "Noun"},
+            {en: "Head", ar: "رأس", cat: "Noun"}, {en: "House", ar: "بيت", cat: "Noun"},
+            {en: "Service", ar: "خدمة", cat: "Noun"}, {en: "Friend", ar: "صديق", cat: "Noun"},
+            {en: "Father", ar: "أب", cat: "Noun"}, {en: "Power", ar: "طاقة / قوة", cat: "Noun"},
+            {en: "Hour", ar: "ساعة", cat: "Noun"}, {en: "Game", ar: "لعبة", cat: "Noun"},
+            {en: "Line", ar: "خط", cat: "Noun"}, {en: "End", ar: "نهاية", cat: "Noun"},
+            {en: "Member", ar: "عضو", cat: "Noun"}, {en: "Law", ar: "قانون", cat: "Noun"},
+            {en: "Car", ar: "سيارة", cat: "Noun"}, {en: "City", ar: "مدينة", cat: "Noun"},
+            {en: "Community", ar: "مجتمع", cat: "Noun"}, {en: "Name", ar: "اسم", cat: "Noun"},
+            {en: "President", ar: "رئيس", cat: "Noun"}, {en: "Team", ar: "فريق", cat: "Noun"},
+            {en: "Minute", ar: "دقيقة", cat: "Noun"}, {en: "Idea", ar: "فكرة", cat: "Noun"},
+            {en: "Kid", ar: "طفل", cat: "Noun"}, {en: "Body", ar: "جسم", cat: "Noun"},
+            {en: "Information", ar: "معلومات", cat: "Noun"}, {en: "Back", ar: "ظهر / خلف", cat: "Noun"},
+            {en: "Parent", ar: "والد", cat: "Noun"}, {en: "Face", ar: "وجه", cat: "Noun"},
+            {en: "Others", ar: "آخرون", cat: "Noun"}, {en: "Level", ar: "مستوى", cat: "Noun"},
+            {en: "Office", ar: "مكتب", cat: "Noun"}, {en: "Door", ar: "باب", cat: "Noun"},
+            {en: "Health", ar: "صحة", cat: "Noun"}, {en: "Person", ar: "شخص", cat: "Noun"},
+            {en: "Art", ar: "فن", cat: "Noun"}, {en: "War", ar: "حرب", cat: "Noun"},
+            {en: "History", ar: "تاريخ", cat: "Noun"}, {en: "Party", ar: "حفلة / حزب", cat: "Noun"},
+            {en: "Result", ar: "نتيجة", cat: "Noun"}, {en: "Change", ar: "تغيير", cat: "Noun"},
+            {en: "Morning", ar: "صباح", cat: "Noun"}, {en: "Reason", ar: "سبب", cat: "Noun"},
+            {en: "Research", ar: "بحث", cat: "Noun"}, {en: "Girl", ar: "بنت", cat: "Noun"},
+            {en: "Guy", ar: "رجل / شاب", cat: "Noun"}, {en: "Moment", ar: "لحظة", cat: "Noun"},
+            {en: "Air", ar: "هواء", cat: "Noun"}, {en: "Teacher", ar: "معلم", cat: "Noun"},
+            {en: "Force", ar: "قوة", cat: "Noun"}, {en: "Education", ar: "تعليم", cat: "Noun"}
         ];
 
-        const vocabBody = document.getElementById('vocabBody');
+        const vocabGrid = document.getElementById('vocabGrid');
         const searchInput = document.getElementById('searchInput');
+        const stats = document.getElementById('stats');
 
-        function displayWords(filter = "") {
-            vocabBody.innerHTML = "";
-            const filtered = words.filter(w => 
-                w.en.toLowerCase().includes(filter.toLowerCase()) || 
-                w.ar.includes(filter)
+        function renderWords(filter = "") {
+            vocabGrid.innerHTML = "";
+            const filteredWords = vocabulary.filter(item => 
+                item.en.toLowerCase().includes(filter.toLowerCase()) || 
+                item.ar.includes(filter)
             );
-            filtered.forEach(w => {
-                vocabBody.innerHTML += `<tr><td>${w.en}</td><td>${w.ar}</td></tr>`;
+
+            stats.innerText = `تم عرض ${filteredWords.length} كلمة`;
+
+            filteredWords.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'word-card';
+                card.innerHTML = `
+                    <span class="en">${item.en}</span>
+                    <span class="ar">${item.ar}</span>
+                    <br>
+                    <span class="category-tag">${item.cat}</span>
+                `;
+                vocabGrid.appendChild(card);
             });
         }
 
-        searchInput.addEventListener('input', (e) => displayWords(e.target.value));
-        displayWords(); // عرض الكلمات عند التحميل
+        searchInput.addEventListener('input', (e) => renderWords(e.target.value));
+        
+        // التشغيل لأول مرة
+        renderWords();
     </script>
 </body>
 </html>
