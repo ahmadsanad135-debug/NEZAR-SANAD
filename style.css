@@ -12,7 +12,7 @@ body {
     line-height: 1.6;
 }
 
-/* نافذة تحميل التطبيق */
+/* نافذة تحميل التطبيق (البانر) */
 .install-banner {
     background-color: #1e3a8a;
     color: white;
@@ -23,16 +23,14 @@ body {
     width: 100%;
     z-index: 1000;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    display: flex;
+    display: none; /* يتم التحكم به بواسطة JS */
     justify-content: center;
     align-items: center;
     gap: 15px;
     flex-wrap: wrap;
 }
 
-.install-banner.hidden {
-    display: none;
-}
+.install-banner p { margin: 0; }
 
 .install-banner button {
     padding: 8px 15px;
@@ -42,16 +40,8 @@ body {
     font-weight: bold;
 }
 
-#install-btn {
-    background-color: #f59e0b;
-    color: white;
-}
-
-#close-btn {
-    background-color: transparent;
-    color: white;
-    border: 1px solid white;
-}
+#install-btn { background-color: #f59e0b; color: white; }
+#close-btn { background-color: transparent; color: white; border: 1px solid white; }
 
 /* الشريط العلوي */
 header {
@@ -61,66 +51,20 @@ header {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    margin-top: 60px; /* لترك مسافة لنافذة التحميل */
 }
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #2563eb;
-}
+.logo { font-size: 24px; font-weight: bold; color: #2563eb; }
+.logo span { color: #f59e0b; }
 
-.logo span {
-    color: #f59e0b;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: #4b5563;
-    font-weight: 600;
-    transition: color 0.3s;
-}
-
-nav ul li a:hover {
-    color: #2563eb;
-}
+nav ul { list-style: none; display: flex; gap: 20px; }
+nav ul li a { text-decoration: none; color: #4b5563; font-weight: 600; transition: color 0.3s; }
+nav ul li a:hover { color: #2563eb; }
 
 /* القسم الترحيبي */
-.hero {
-    text-align: center;
-    padding: 80px 20px;
-    background: linear-gradient(135deg, #2563eb, #1e40af);
-    color: white;
-}
+.hero { text-align: center; padding: 80px 20px; background: linear-gradient(135deg, #2563eb, #1e40af); color: white; }
+.hero h1 { font-size: 2.5rem; margin-bottom: 15px; }
 
-.hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-}
-
-.cta-btn {
-    margin-top: 20px;
-    padding: 12px 30px;
-    font-size: 18px;
-    background-color: #f59e0b;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.cta-btn:hover {
-    background-color: #d97706;
-}
-
-/* البطاقات (الأقسام) */
+/* البطاقات */
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -139,42 +83,26 @@ nav ul li a:hover {
     transition: transform 0.3s;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-}
+.card:hover { transform: translateY(-5px); }
+.card h3 { color: #1e3a8a; margin-bottom: 15px; }
 
-.card h3 {
-    color: #1e3a8a;
-    margin-bottom: 15px;
-}
-
+/* تنسيق أزرار البطاقات (مهم جداً) */
 .card-btn {
+    display: inline-block;
     margin-top: 15px;
     padding: 10px 20px;
     background-color: #2563eb;
     color: white;
-    border: none;
+    text-decoration: none;
     border-radius: 5px;
-    cursor: pointer;
+    transition: background 0.3s;
 }
+.card-btn:hover { background-color: #1e40af; }
 
-footer {
-    text-align: center;
-    padding: 20px;
-    background-color: #1f2937;
-    color: white;
-    margin-top: 40px;
-}
+footer { text-align: center; padding: 20px; background-color: #1f2937; color: white; }
 
 /* التوافق مع الهواتف */
 @media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        gap: 15px;
-        padding: 20px;
-    }
-    nav ul {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+    header { flex-direction: column; gap: 15px; padding: 20px; }
 }
+ 
