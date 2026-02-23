@@ -5,7 +5,8 @@
     <title>مركز الاستماع - إتقان</title>
     <style>
         body { font-family: sans-serif; background: #eef2f6; padding: 20px; text-align: center; }
-        .card { max-width: 500px; margin: 40px auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .card { max-width: 600px; margin: 40px auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        select { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #ddd; }
         audio { width: 100%; margin-top: 20px; }
     </style>
 </head>
@@ -13,16 +14,16 @@
 
 <div class="card">
     <h2>🎧 مركز الاستماع</h2>
-    <p>اختر الحوار وابدأ بالاستماع:</p>
-    
-    <select id="audioSelector" onchange="changeAudio()" style="padding:10px; width:100%; border-radius:10px;">
-        <option value="audio/audio1.mp3">حوار التعارف</option>
-        <option value="audio/audio2.mp3">حوار في المطعم</option>
-        <option value="audio/audio3.mp3">حوار عن الوقت</option>
+    <p>اختر الحلقة واستمتع بالاستماع:</p>
+
+    <select id="audioSelector" onchange="changeAudio()">
+        <option value="audio/6MinuteEnglish-20260122-ScaredToSpeakEnglish.mp3">Scared To Speak English</option>
+        <option value="audio/6MinuteEnglish-20260212-ArtisticSwimming.mp3">Artistic Swimming</option>
+        <option value="audio/6MinuteEnglish-20260219-DreamingOfBeingAChef.mp3">Dreaming Of Being A Chef</option>
     </select>
 
     <audio controls id="myAudio">
-        <source src="audio/audio1.mp3" type="audio/mpeg">
+        <source src="audio/6MinuteEnglish-20260122-ScaredToSpeakEnglish.mp3" type="audio/mpeg">
     </audio>
 </div>
 
@@ -32,12 +33,12 @@
         const audio = document.getElementById('myAudio');
         const source = audio.querySelector('source');
         
+        // تغيير المصدر حسب اختيار المستخدم
         source.src = selector.value;
         audio.load();
-        audio.play(); // يبدأ الصوت تلقائياً عند الاختيار
+        audio.play();
     }
 </script>
 
 </body>
 </html>
- 
