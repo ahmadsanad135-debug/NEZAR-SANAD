@@ -4,34 +4,26 @@
     <meta charset="UTF-8">
     <title>مركز الاستماع - إتقان</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #eef2f6; padding: 20px; text-align: center; }
-        .listen-card { max-width: 600px; margin: 40px auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        audio { width: 100%; margin: 20px 0; border-radius: 50px; }
-        select { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #ddd; }
-        .transcript { background: #f9fafb; padding: 15px; border-radius: 10px; text-align: left; margin-top: 20px; color: #333; direction: ltr; }
-        h2 { color: #1e3a8a; }
+        body { font-family: sans-serif; background: #eef2f6; padding: 20px; text-align: center; }
+        .card { max-width: 500px; margin: 40px auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        audio { width: 100%; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-<div class="listen-card">
-    <h2>🎧 مركز الاستماع الإنجليزي</h2>
-    <p>اختر حواراً واستمع إليه، يمكنك قراءة النص أثناء الاستماع:</p>
-
-    <select id="audioSelector" onchange="changeAudio()">
-        <option value="https://www.eslfast.com/robot/audio/conversation/conversation01.mp3" data-text="A: Hello! I'm John. B: Hi John, I'm Sarah. Nice to meet you. A: Nice to meet you too!">حوار التعارف</option>
-        <option value="https://www.eslfast.com/robot/audio/conversation/conversation02.mp3" data-text="A: What would you like to eat? B: I would like a burger, please. A: And to drink? B: Water, please.">حوار في المطعم</option>
-        <option value="https://www.eslfast.com/robot/audio/conversation/conversation03.mp3" data-text="A: What time is it? B: It is 3 o'clock. A: Thank you!">حوار عن الوقت</option>
+<div class="card">
+    <h2>🎧 مركز الاستماع</h2>
+    <p>اختر الحوار وابدأ بالاستماع:</p>
+    
+    <select id="audioSelector" onchange="changeAudio()" style="padding:10px; width:100%; border-radius:10px;">
+        <option value="audio/audio1.mp3">حوار التعارف</option>
+        <option value="audio/audio2.mp3">حوار في المطعم</option>
+        <option value="audio/audio3.mp3">حوار عن الوقت</option>
     </select>
 
     <audio controls id="myAudio">
-        <source src="https://www.eslfast.com/robot/audio/conversation/conversation01.mp3" type="audio/mpeg">
+        <source src="audio/audio1.mp3" type="audio/mpeg">
     </audio>
-
-    <div class="transcript" id="transcript">
-        <strong>نص الحوار:</strong><br>
-        A: Hello! I'm John. B: Hi John, I'm Sarah. Nice to meet you. A: Nice to meet you too!
-    </div>
 </div>
 
 <script>
@@ -39,16 +31,13 @@
         const selector = document.getElementById('audioSelector');
         const audio = document.getElementById('myAudio');
         const source = audio.querySelector('source');
-        const transcript = document.getElementById('transcript');
         
-        // تحديث مصدر الصوت
         source.src = selector.value;
         audio.load();
-        
-        // تحديث نص الحوار
-        transcript.innerHTML = "<strong>نص الحوار:</strong><br>" + selector.options[selector.selectedIndex].getAttribute('data-text');
+        audio.play(); // يبدأ الصوت تلقائياً عند الاختيار
     }
 </script>
 
 </body>
 </html>
+ 
