@@ -2,32 +2,48 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>اختبار إتقان التفاعلي</title>
-    <link rel="stylesheet" href="style.css">
+    <title>اختبار إتقان الشامل</title>
     <style>
-        .quiz-container { max-width: 600px; margin: 50px auto; padding: 20px; background: #fff; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .option-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #2563eb; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-        .option-btn:hover { background: #dbeafe; }
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .quiz-container { max-width: 700px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .option-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #2563eb; border-radius: 8px; cursor: pointer; text-align: right; font-size: 16px; transition: 0.2s; }
+        .option-btn:hover { background: #eff6ff; }
         .correct { background: #22c55e !important; color: white; border-color: #166534; }
         .wrong { background: #ef4444 !important; color: white; border-color: #991b1b; }
     </style>
 </head>
 <body>
+
 <div class="quiz-container">
-    <h2 id="question">جاري تحميل السؤال...</h2>
+    <h2 id="q-num">سؤال 1 من 15</h2>
+    <h3 id="question">جاري التحميل...</h3>
     <div id="options"></div>
-    <p id="score-text"></p>
 </div>
 
 <script>
 const quizData = [
-    { q: "ما هو تصريف الفعل Go في الماضي؟", a: ["Went", "Gone", "Going"], correct: 0 },
-    { q: "أي جملة هي الصحيحة للمضارع المستمر؟", a: ["I am study", "I am studying", "I study"], correct: 1 }
+    { q: "ما هو تصريف الفعل Go في الماضي؟", a: ["Went", "Gone", "Going", "Goed"], correct: 0 },
+    { q: "أي جملة هي الصحيحة للمضارع المستمر؟", a: ["I study now", "I am studying", "I studied", "I studies"], correct: 1 },
+    { q: "كيف ننفي جملة 'He plays football'؟", a: ["He not plays", "He doesn't play", "He don't play", "He not play"], correct: 1 },
+    { q: "ما معنى كلمة 'Resilient'؟", a: ["غامض", "قادر على الصمود", "سريع", "جميل"], correct: 1 },
+    { q: "نستخدم 'Have/Has + V3' في زمن؟", a: ["الماضي البسيط", "المضارع التام", "المستقبل", "المضارع المستمر"], correct: 1 },
+    { q: "أكمل: She _______ to Paris last year.", a: ["go", "goes", "went", "gone"], correct: 2 },
+    { q: "ما هو السؤال المذيل الصحيح لـ 'You are happy'؟", a: ["are you?", "aren't you?", "do you?", "don't you?"], correct: 1 },
+    { q: "ترجمة 'Ambiguous' هي:", a: ["واضح", "غامض", "صعب", "مهم"], correct: 1 },
+    { q: "أي فعل من هؤلاء يعتبر 'فعل منتظم' (Regular)؟", a: ["Go", "Eat", "Play", "See"], correct: 2 },
+    { q: "نستخدم 'was/were + V-ing' في زمن؟", a: ["الماضي المستمر", "المضارع التام", "الماضي التام", "المستقبل"], correct: 0 },
+    { q: "تصحيح الجملة: 'They is playing'.", a: ["They are playing", "They be playing", "They playing", "They was playing"], correct: 0 },
+    { q: "الكلمة التي تدل على المضارع التام هي:", a: ["Yesterday", "Already", "Now", "Next week"], correct: 1 },
+    { q: "معنى كلمة 'Create' هو:", a: ["يدمر", "ينشئ", "يأخذ", "يخسر"], correct: 1 },
+    { q: "ما هو المستقبل البسيط؟", a: ["will + Verb", "am going to", "had + V3", "V2"], correct: 0 },
+    { q: "ترجمة 'Family' هي:", a: ["صديق", "عائلة", "مدرسة", "بيت"], correct: 1 }
 ];
 
 let currentQ = 0, score = 0;
+
 function loadQuiz() {
     const data = quizData[currentQ];
+    document.getElementById('q-num').innerText = `سؤال ${currentQ + 1} من 15`;
     document.getElementById('question').innerText = data.q;
     const optionsDiv = document.getElementById('options');
     optionsDiv.innerHTML = '';
@@ -39,18 +55,19 @@ function loadQuiz() {
         optionsDiv.appendChild(btn);
     });
 }
+
 function check(idx, btn) {
-    if(idx === quizData[currentQ].correct) {
-        btn.classList.add('correct'); score++;
-    } else {
-        btn.classList.add('wrong');
-    }
+    const correct = quizData[currentQ].correct;
+    if(idx === correct) { btn.classList.add('correct'); score++; }
+    else { btn.classList.add('wrong'); }
+    
     setTimeout(() => {
         currentQ++;
         if(currentQ < quizData.length) loadQuiz();
-        else document.querySelector('.quiz-container').innerHTML = `<h2>انتهى الاختبار! نتيجتك: ${score}/${quizData.length}</h2>`;
-    }, 1000);
+        else document.querySelector('.quiz-container').innerHTML = `<h2>انتهى الاختبار!</h2><p>نتيجتك النهائية هي: ${score} من 15</p><button onclick="location.reload()">أعد الاختبار</button>`;
+    }, 800);
 }
+
 loadQuiz();
 </script>
 </body>
