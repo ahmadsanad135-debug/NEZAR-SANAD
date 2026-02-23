@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <title>مركز الاستماع - إتقان</title>
+    <title>Listening Center - Itqan</title>
     <style>
         body { font-family: sans-serif; background: #eef2f6; padding: 20px; text-align: center; }
         .card { max-width: 600px; margin: 40px auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
@@ -12,12 +12,15 @@
         #quiz-section { margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 15px; border: 1px solid #eee; display: none; }
         .option-btn { display: block; width: 100%; padding: 10px; margin: 8px 0; cursor: pointer; border: 1px solid #2563eb; border-radius: 5px; background: white; color: #2563eb; font-weight: bold; }
         .option-btn:hover { background: #2563eb; color: white; }
+        #next-btn { padding: 10px 20px; background: #059669; color: white; border: none; border-radius: 5px; cursor: pointer; display: none; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>🎧 مركز الاستماع</h2>
+    <h2>🎧 Listening Center</h2>
+    <p>Choose an episode and test your understanding:</p>
+
     <select id="audioSelector" onchange="loadQuiz()">
         <option value="6MinuteEnglish-20260122-ScaredToSpeakEnglish.mp3">Scared To Speak English</option>
         <option value="6MinuteEnglish-20260212-ArtisticSwimming.mp3">Artistic Swimming</option>
@@ -30,22 +33,33 @@
         <h4 id="question-text"></h4>
         <div id="options-container"></div>
         <p id="result-message"></p>
-        <button onclick="nextQuestion()" id="next-btn" style="display:none;">السؤال التالي</button>
+        <button onclick="nextQuestion()" id="next-btn">Next Question</button>
     </div>
 </div>
 
 <script>
     const audioData = {
         "6MinuteEnglish-20260122-ScaredToSpeakEnglish.mp3": [
-            { q: "ما هو السبب الرئيسي للخوف من التحدث؟", options: ["الخوف من الخطأ", "نقص الوقت", "صعوبة النطق"], correct: "الخوف من الخطأ" },
-            { q: "كيف نتغلب على هذا الخوف؟", options: ["بالممارسة", "بالصمت", "بالقراءة فقط"], correct: "بالممارسة" },
-            { q: "هل التحدث بطلاقة يحتاج وقت؟", options: ["نعم", "لا", "أحياناً"], correct: "نعم" },
-            { q: "ما أهمية الاستماع؟", options: ["زيادة المفردات", "تضييع الوقت", "تغيير النبرة"], correct: "زيادة المفردات" },
-            { q: "هل الخطأ في التعلم طبيعي؟", options: ["طبيعي جداً", "غير مقبول", "نادراً"], correct: "طبيعي جداً" }
+            { q: "What is the main reason people fear speaking English?", options: ["Fear of making mistakes", "Lack of time", "Difficulty in pronunciation", "Listening issues"], correct: "Fear of making mistakes" },
+            { q: "How can we overcome this fear?", options: ["By practicing", "By staying silent", "By reading only", "By watching movies"], correct: "By practicing" },
+            { q: "Does speaking fluently take time?", options: ["Yes, absolutely", "No", "Sometimes", "It's impossible"], correct: "Yes, absolutely" },
+            { q: "Why is listening important?", options: ["To increase vocabulary", "To waste time", "To change tone", "To tire the ears"], correct: "To increase vocabulary" },
+            { q: "Is making mistakes a natural part of learning?", options: ["Yes, very natural", "It's unacceptable", "Rarely", "It's embarrassing"], correct: "Yes, very natural" }
         ],
-        // يمكنك إضافة الأسئلة للملفين الآخرين بنفس الطريقة (5 أسئلة لكل ملف)
-        "6MinuteEnglish-20260212-ArtisticSwimming.mp3": [/* 5 أسئلة هنا */],
-        "6MinuteEnglish-20260219-DreamingOfBeingAChef.mp3": [/* 5 أسئلة هنا */]
+        "6MinuteEnglish-20260212-ArtisticSwimming.mp3": [
+            { q: "What is the core element of artistic swimming?", options: ["Only speed", "Music and harmony", "High jumping", "Body weight"], correct: "Music and harmony" },
+            { q: "Where is this sport practiced?", options: ["In a stadium", "In a swimming pool", "In a gym", "In the air"], correct: "In a swimming pool" },
+            { q: "What does this sport require?", options: ["High fitness", "Height", "Calmness", "Speed only"], correct: "High fitness" },
+            { q: "Is artistic swimming a group sport?", options: ["Often yes", "Never", "Individual only", "I don't know"], correct: "Often yes" },
+            { q: "Does it depend on timing?", options: ["Yes, very precisely", "Not important", "Sometimes", "Rarely"], correct: "Yes, very precisely" }
+        ],
+        "6MinuteEnglish-20260219-DreamingOfBeingAChef.mp3": [
+            { q: "What does dreaming of being a chef require?", options: ["Passion and creativity", "Luck", "Buying a restaurant", "Just money"], correct: "Passion and creativity" },
+            { q: "Is cooking an art or a skill?", options: ["Both", "Just a job", "Boring", "Primitive"], correct: "Both" },
+            { q: "What is the primary tool for a chef?", options: ["A knife", "A phone", "A book", "A computer"], correct: "A knife" },
+            { q: "Does cooking require patience?", options: ["Yes, definitely", "Never", "Sometimes", "Not necessary"], correct: "Yes, definitely" },
+            { q: "Why is experimenting with flavors important?", options: ["For development", "No importance", "For fun", "For sales"], correct: "For development" }
+        ]
     };
 
     let currentQ = 0;
@@ -71,19 +85,29 @@
             container.appendChild(btn);
         });
         document.getElementById('quiz-section').style.display = 'block';
+        document.getElementById('next-btn').style.display = 'none';
+        document.getElementById('result-message').innerText = "";
     }
 
     function check(selected, correct) {
-        document.getElementById('result-message').innerText = (selected === correct) ? "✅ صحيح" : "❌ خطأ";
+        document.getElementById('result-message').innerText = (selected === correct) ? "✅ Correct!" : "❌ Incorrect.";
         document.getElementById('next-btn').style.display = 'block';
     }
 
     function nextQuestion() {
         currentQ++;
         if (currentQ < 5) showQuestion();
-        else alert("انتهت الأسئلة!");
+        else {
+            alert("Quiz completed! Great job.");
+            currentQ = 0;
+            showQuestion();
+        }
     }
+
+    // تهيئة الاختبار عند تحميل الصفحة
+    window.onload = showQuestion;
 </script>
 
 </body>
 </html>
+ 
